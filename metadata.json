@@ -1,0 +1,6 @@
+{
+  "name": "Inscrições Capacitações ISP-RJ",
+  "description": "Visualização e gestão das inscrições para o ciclo de capacitações do Instituto de Segurança Pública (ISP-RJ) - PM3.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
