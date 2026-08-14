@@ -75,7 +75,8 @@ export const exportInscricoesToPdf = (
   // Build table data
   const head = [[
     '#',
-    'Data',
+    'Envio (Carimbo)',
+    'Data Capacitação',
     'Comando',
     'OPM',
     'Chefe da 3ª Seção',
@@ -113,8 +114,12 @@ export const exportInscricoesToPdf = (
 
     const formattedPhones = item.telefonesList.map(t => formatPhone(t)).join('\n') || formatPhone(item.telefone);
 
+    // Format timestamp nicely for table cell
+    const timestampDisplay = item.timestamp ? item.timestamp.replace(' ', '\n') : '-';
+
     return [
       (index + 1).toString(),
+      timestampDisplay,
       item.dataCapacitacao,
       item.comandoIntermediario,
       item.opm,
@@ -133,8 +138,8 @@ export const exportInscricoesToPdf = (
     margin: { left: 24, right: 24, bottom: 30 },
     theme: 'grid',
     styles: {
-      fontSize: 7.5,
-      cellPadding: 4,
+      fontSize: 7.2,
+      cellPadding: 3.5,
       textColor: [30, 41, 59], // slate-800
       lineColor: [203, 213, 225], // slate-300
       lineWidth: 0.5,
@@ -145,21 +150,22 @@ export const exportInscricoesToPdf = (
       textColor: [255, 255, 255],
       fontStyle: 'bold',
       halign: 'center',
-      fontSize: 8,
+      fontSize: 7.8,
     },
     alternateRowStyles: {
       fillColor: [248, 250, 252], // slate-50
     },
     columnStyles: {
-      0: { cellWidth: 20, halign: 'center' }, // #
-      1: { cellWidth: 46, halign: 'center', fontStyle: 'bold' }, // Data
-      2: { cellWidth: 50, halign: 'center' }, // Comando
-      3: { cellWidth: 60, fontStyle: 'bold' }, // OPM
-      4: { cellWidth: 155 }, // Chefe
-      5: { cellWidth: 140 }, // 1° Policial
-      6: { cellWidth: 140 }, // 2° Policial
-      7: { cellWidth: 70, halign: 'center' }, // Telefone
-      8: { cellWidth: 110 }, // Email
+      0: { cellWidth: 16, halign: 'center', fontStyle: 'bold' }, // #
+      1: { cellWidth: 58, halign: 'center', fontSize: 6.8 }, // Envio (Carimbo)
+      2: { cellWidth: 46, halign: 'center', fontStyle: 'bold' }, // Data
+      3: { cellWidth: 46, halign: 'center' }, // Comando
+      4: { cellWidth: 54, fontStyle: 'bold' }, // OPM
+      5: { cellWidth: 145 }, // Chefe
+      6: { cellWidth: 130 }, // 1° Policial
+      7: { cellWidth: 130 }, // 2° Policial
+      8: { cellWidth: 64, halign: 'center' }, // Telefone
+      9: { cellWidth: 102 }, // Email
     },
     didDrawPage: (data) => {
       // Footer page numbering

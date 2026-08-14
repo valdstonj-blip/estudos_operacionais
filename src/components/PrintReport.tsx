@@ -45,7 +45,8 @@ export const PrintReport: React.FC<PrintReportProps> = ({ inscricoes, totalEfeti
       <table className="w-full border-collapse border border-gray-400 text-[10px]">
         <thead>
           <tr className="bg-gray-200 text-black font-bold uppercase border-b border-gray-400">
-            <th className="border border-gray-400 p-1.5 text-center w-8">#</th>
+            <th className="border border-gray-400 p-1.5 text-center w-7">#</th>
+            <th className="border border-gray-400 p-1.5 text-center whitespace-nowrap">Envio (Carimbo)</th>
             <th className="border border-gray-400 p-1.5 text-center">Data</th>
             <th className="border border-gray-400 p-1.5 text-center">CPA</th>
             <th className="border border-gray-400 p-1.5 text-left">OPM</th>
@@ -60,6 +61,7 @@ export const PrintReport: React.FC<PrintReportProps> = ({ inscricoes, totalEfeti
           {inscricoes.map((item, idx) => (
             <tr key={item.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
               <td className="border border-gray-300 p-1 text-center font-bold">{idx + 1}</td>
+              <td className="border border-gray-300 p-1 text-center font-mono text-[9px] whitespace-nowrap">{item.timestamp || '-'}</td>
               <td className="border border-gray-300 p-1 text-center font-bold whitespace-nowrap">{item.dataCapacitacao}</td>
               <td className="border border-gray-300 p-1 text-center whitespace-nowrap">{item.comandoIntermediario}</td>
               <td className="border border-gray-300 p-1 font-bold">{item.opm}</td>
