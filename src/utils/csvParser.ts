@@ -82,6 +82,35 @@ export function parsePhoneNumbers(phoneStr: string): string[] {
 }
 
 /**
+ * Parses Brazilian date string "DD/MM/YYYY HH:mm:ss" or "DD/MM/YYYY" into epoch milliseconds for accurate sorting
+ */
+export function parseDateTimestamp(ts: string): number {
+  if (!ts) return 0;
+  const trimmed = ts.trim();
+  const parts = trimmed.split(' ');
+  const dateParts = (parts[0] || '').split('/');
+  if (dateParts.length === 3) {
+    const day = parseInt(dateParts[0], 10);
+    const month = parseInt(dateParts[1], 10) - 1;
+    let year = parseInt(dateParts[2], 10);
+    if (year < 100) year += 2000;
+
+    let hour = 0;
+    let min = 0;
+    let sec = 0;
+    if (parts[1]) {
+      const timeParts = parts[1].split(':');
+      hour = parseInt(timeParts[0] || '0', 10);
+      min = parseInt(timeParts[1] || '0', 10);
+      sec = parseInt(timeParts[2] || '0', 10);
+    }
+    const d = new Date(year, month, day, hour, min, sec);
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+  }
+  return 0;
+}
+
+/**
  * Format phone string for visual display
  */
 export function formatPhone(phone: string): string {
@@ -205,10 +234,13 @@ export function parseCsv(csvText: string): Inscricao[] {
 
     const comandoIntermediario = normalizeCpa(comandoIntermediarioRaw);
     const telefonesList = parsePhoneNumbers(telefone);
+    const timestampParsed = parseDateTimestamp(timestamp);
 
     inscricoes.push({
       id: `insc-${i}-${opm.replace(/\s+/g, '-')}`,
+      orderIndex: i,
       timestamp,
+      timestampParsed,
       email,
       dataCapacitacao,
       chefeSecaoRaw,

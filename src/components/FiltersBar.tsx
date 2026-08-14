@@ -176,16 +176,20 @@ export const FiltersBar: React.FC<FiltersBarProps> = ({
               onChange={(e) => onFilterChange({ sortBy: e.target.value as any })}
               className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
             >
+              <option value="timestamp">Carimbo / Envio (Ordem Planilha)</option>
               <option value="data">Data de Capacitação</option>
               <option value="cpa">Comando (CPA)</option>
               <option value="opm">OPM / Unidade</option>
-              <option value="timestamp">Ordem de Inscrição</option>
               <option value="totalEfetivo">Qtd. Efetivo</option>
             </select>
             <button
               onClick={() => onFilterChange({ sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc' })}
-              className="p-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg text-slate-600 hover:text-slate-900 cursor-pointer"
-              title={`Ordem: ${filters.sortOrder === 'asc' ? 'Crescente' : 'Decrescente'}`}
+              className={`p-1.5 border rounded-lg cursor-pointer transition-colors ${
+                filters.sortOrder === 'asc'
+                  ? 'bg-blue-50 border-blue-200 text-blue-900'
+                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
+              }`}
+              title={`Ordem: ${filters.sortOrder === 'asc' ? 'Crescente (Antigos → Recentes)' : 'Decrescente (Recentes → Antigos)'}`}
             >
               <ArrowUpDown className="w-3.5 h-3.5" />
             </button>

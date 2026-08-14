@@ -60,9 +60,16 @@ export const InscricoesCards: React.FC<InscricoesCardsProps> = ({
                     <h3 className="text-base font-extrabold text-slate-900 leading-tight">
                       {item.opm}
                     </h3>
-                    <span className="inline-block text-[11px] font-semibold text-blue-700">
-                      {item.comandoIntermediario}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="inline-block text-[11px] font-semibold text-blue-700">
+                        {item.comandoIntermediario}
+                      </span>
+                      {item.timestamp && (
+                        <span className="text-[10px] text-slate-400 font-mono">
+                          • Envio: {item.timestamp}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
 

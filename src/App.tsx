@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Inscricao, FilterState, StatSummary } from './types';
 import { GOOGLE_SHEET_CSV_URL, FALLBACK_CSV_DATA } from './data/sampleData';
-import { parseCsv } from './utils/csvParser';
+import { parseCsv, parseDateTimestamp } from './utils/csvParser';
 import { Header } from './components/Header';
 import { StatsOverview } from './components/StatsOverview';
 import { FiltersBar } from './components/FiltersBar';
@@ -28,13 +28,13 @@ export default function App() {
   // View mode: 'table' or 'cards' (responsive default)
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
-  // Filter state
+  // Filter state - Default to chronological submission timestamp ascending (matches spreadsheet order)
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     dataSelected: '',
     cpaSelected: '',
     opmSelected: '',
-    sortBy: 'data',
+    sortBy: 'timestamp',
     sortOrder: 'asc',
   });
 
@@ -98,7 +98,7 @@ export default function App() {
     inscricoes.forEach((i) => {
       if (i.dataCapacitacao) dates.add(i.dataCapacitacao);
     });
-    return Array.from(dates).sort();
+    return Array.from(dates).sort((a, b) => parseDateTimestamp(a) - parseDateTimestamp(b));
   }, [inscricoes]);
 
   const availableCpas = useMemo(() => {
@@ -128,6 +128,7 @@ export default function App() {
             item.opm.toLowerCase().includes(q) ||
             item.comandoIntermediario.toLowerCase().includes(q) ||
             item.dataCapacitacao.toLowerCase().includes(q) ||
+            item.timestamp.toLowerCase().includes(q) ||
             item.email.toLowerCase().includes(q) ||
             item.telefone.toLowerCase().includes(q) ||
             item.chefeSecaoRaw.toLowerCase().includes(q) ||
@@ -163,16 +164,21 @@ export default function App() {
       })
       .sort((a, b) => {
         let comp = 0;
-        if (filters.sortBy === 'data') {
-          comp = a.dataCapacitacao.localeCompare(b.dataCapacitacao);
+        if (filters.sortBy === 'timestamp' || filters.sortBy === 'sheet') {
+          const timeA = a.timestampParsed || parseDateTimestamp(a.timestamp);
+          const timeB = b.timestampParsed || parseDateTimestamp(b.timestamp);
+          comp = timeA - timeB;
+          if (comp === 0) comp = a.orderIndex - b.orderIndex;
+        } else if (filters.sortBy === 'data') {
+          const dateA = parseDateTimestamp(a.dataCapacitacao);
+          const dateB = parseDateTimestamp(b.dataCapacitacao);
+          comp = dateA - dateB;
           if (comp === 0) comp = a.opm.localeCompare(b.opm, undefined, { numeric: true });
         } else if (filters.sortBy === 'cpa') {
           comp = a.comandoIntermediario.localeCompare(b.comandoIntermediario, undefined, { numeric: true });
           if (comp === 0) comp = a.opm.localeCompare(b.opm, undefined, { numeric: true });
         } else if (filters.sortBy === 'opm') {
           comp = a.opm.localeCompare(b.opm, undefined, { numeric: true });
-        } else if (filters.sortBy === 'timestamp') {
-          comp = a.timestamp.localeCompare(b.timestamp);
         } else if (filters.sortBy === 'totalEfetivo') {
           comp = a.totalEfetivo - b.totalEfetivo;
         }
@@ -222,8 +228,18 @@ export default function App() {
       dataSelected: '',
       cpaSelected: '',
       opmSelected: '',
-      sortBy: 'data',
+      sortBy: 'timestamp',
       sortOrder: 'asc',
+    });
+  };
+
+  // Toggle sort from column headers
+  const handleHeaderSort = (column: FilterState['sortBy']) => {
+    setFilters((prev) => {
+      if (prev.sortBy === column) {
+        return { ...prev, sortOrder: prev.sortOrder === 'asc' ? 'desc' : 'asc' };
+      }
+      return { ...prev, sortBy: column, sortOrder: 'asc' };
     });
   };
 
@@ -346,6 +362,9 @@ export default function App() {
                 onSelectInscricao={(i) => setSelectedInscricao(i)}
                 copiedId={copiedId}
                 onCopyInfo={handleCopyInfo}
+                sortBy={filters.sortBy}
+                sortOrder={filters.sortOrder}
+                onHeaderSort={handleHeaderSort}
               />
             </div>
           ) : (

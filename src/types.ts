@@ -7,7 +7,9 @@ export interface OfficerInfo {
 
 export interface Inscricao {
   id: string;
-  timestamp: string; // e.g. "12/08/2026 16:06:24"
+  orderIndex: number;
+  timestamp: string; // e.g. "14/08/2026 15:34:40"
+  timestampParsed: number; // epoch ms
   email: string;
   dataCapacitacao: string; // e.g. "18/08/2026"
   chefeSecaoRaw: string;
@@ -28,7 +30,7 @@ export interface FilterState {
   dataSelected: string;
   cpaSelected: string;
   opmSelected: string;
-  sortBy: 'data' | 'opm' | 'cpa' | 'timestamp' | 'totalEfetivo';
+  sortBy: 'timestamp' | 'sheet' | 'data' | 'opm' | 'cpa' | 'totalEfetivo';
   sortOrder: 'asc' | 'desc';
 }
 
