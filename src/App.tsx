@@ -7,6 +7,7 @@ import { StatsOverview } from './components/StatsOverview';
 import { FiltersBar } from './components/FiltersBar';
 import { InscricoesTable } from './components/InscricoesTable';
 import { InscricoesCards } from './components/InscricoesCards';
+import { UnitStatusSummary } from './components/UnitStatusSummary';
 import { InscricaoModal } from './components/InscricaoModal';
 import { PrintReport } from './components/PrintReport';
 import { Footer } from './components/Footer';
@@ -326,6 +327,13 @@ export default function App() {
             stats={stats}
             selectedDate={filters.dataSelected}
             onSelectDate={(d) => handleFilterChange({ dataSelected: d })}
+          />
+
+          {/* Unit Status Tracking Panel (Respondidas, Duplicadas, Pendentes) */}
+          <UnitStatusSummary
+            inscricoes={inscricoes}
+            onSelectUnit={(opmName) => handleFilterChange({ search: opmName })}
+            onSelectInscricao={(ins) => setSelectedInscricao(ins)}
           />
 
           {/* Filters & Actions Bar */}

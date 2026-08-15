@@ -13,18 +13,27 @@ O sistema foi desenvolvido como uma Single Page Application (SPA) moderna, respo
 ### Principais Recursos
 1. **Sincronização em Tempo Real com o Google Sheets**: Consumo direto via link CSV publicado da planilha do Google Forms/Sheets, garantindo que novas respostas enviadas pelas OPMs entrem no painel imediatamente ao clicar em *Atualizar Dados* ou a cada ciclo de polling.
 2. **Ordenação Cronológica e Espelhada**: Exibição ordenada por padrão pelo **Carimbo de data/hora (Envio)**, permitindo que a tabela reflita fielmente a sequência de preenchimento da planilha (com os registros mais recentes ao final).
-3. **Múltiplas Visões Padronizadas**:
+3. **Quadro de Acompanhamento e Auditoria de Unidades (Respondidas, Múltiplos Envios e Pendentes)**:
+   - Cruzamento automático das **50 Unidades Convocadas** (8 Comandos de CPA + 42 Batalhões/CIPMs do 1° ao 8° CPA) estritamente pela coluna **OPM** da planilha.
+   - Identificação precisa de:
+     - 🟢 **Respondidas (1x)**: Unidades regularizadas com 1 envio OK.
+     - 🔵 **Múltiplos Envios (≥ 2x)**: Unidades que preencheram mais de uma vez (como o 6° CPA com 2 respostas), exibindo todas as submissões para análise.
+     - 🔴 **Pendentes**: Unidades convocadas que ainda não responderam (como o 1° CPA).
+   - Botão para copiar a relação de pendências formatada para WhatsApp e despacho imediato.
+4. **Múltiplas Visões Padronizadas**:
    - **Tabela Operacional**: Cabeçalhos fixos (*sticky*), colunas redimensionadas, numeração sequencial, ordenação interativa por clique em coluna e barra de rolagem suave com altura controlada (`max-h-[620px]`).
    - **Modo Cartões**: Visualização em cards responsivos para dispositivos móveis ou telas panorâmicas, padronizada com o mesmo limite de altura e scroll da tabela.
-4. **Filtros Dinâmicos**:
+5. **Filtros Dinâmicos**:
    - Busca global textual (filtra por OPM, CPA, nome do militar, RG, e-mail, telefone, carimbo, etc.).
    - Filtro por Data de Capacitação (18/08, 19/08, 20/08).
    - Filtro por Comando Intermediário (1° CPA a 8° CPA).
    - Filtro por OPM.
-5. **Relatórios e Exportação**:
+6. **Relatórios e Exportação**:
    - Exportação em **PDF profissional** (via `jspdf` e `jspdf-autotable`) com coluna de `#`, `Envio (Carimbo)` em ordem sequencial (1 a N), `Data de Capacitação`, cabeçalho PMERJ/EMG-PM/3, data/hora de emissão e quantitativo total de efetivo.
    - Visão de Impressão Direta otimizada para papel A4 em modo paisagem.
    - Botão de cópia rápida formatada para compartilhamento via WhatsApp e despacho.
+7. **Prompt Mestre para Novos Projetos**:
+   - Disponibilizado no arquivo `PROMPT.md` para reprodução rápida de sistemas similares em qualquer modelo de IA.
 
 ---
 

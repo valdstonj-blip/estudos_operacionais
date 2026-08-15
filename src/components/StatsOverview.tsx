@@ -30,10 +30,10 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
           <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {stats.totalInscricoes}
           </span>
-          <span className="text-xs text-slate-500 font-medium">unidades/OPMs</span>
+          <span className="text-xs text-slate-500 font-medium">respostas na planilha</span>
         </div>
         <p className="mt-1 text-[11px] text-slate-500">
-          Formulários preenchidos
+          Formulários enviados
         </p>
       </div>
 
@@ -109,7 +109,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
                 title={`Filtrar data ${data}`}
               >
                 <div className="text-[11px] font-medium leading-tight">{shortDate}</div>
-                <div className="text-xs sm:text-sm font-bold text-blue-300 mt-0.5">{count} <span className="text-[9px] font-normal text-slate-300">OPMs</span></div>
+                <div className="text-xs sm:text-sm font-bold text-blue-300 mt-0.5">{count} <span className="text-[9px] font-normal text-slate-300">inscrições</span></div>
               </button>
             );
           })}
